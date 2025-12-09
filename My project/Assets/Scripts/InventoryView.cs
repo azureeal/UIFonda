@@ -1,8 +1,12 @@
 using UnityEngine;
+using UnityEngine.UI;
 
 public class InventoryView : MonoBehaviour
 {
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
+    public Image[] slots;
+    public Image[] items;
+
+    
     void Start()
     {
         

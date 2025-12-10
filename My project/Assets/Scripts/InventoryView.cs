@@ -4,17 +4,24 @@ using UnityEngine.UI;
 public class InventoryView : MonoBehaviour
 {
     public Image[] slots;
-    public Image[] items;
+    public Sprite[] placements;
 
-    
     void Start()
     {
         
     }
 
-    // Update is called once per frame
     void Update()
     {
         
+    }
+
+    public void SetItem(Sprite item, int index)
+    {
+        slots[index].sprite = item;
+    }
+    public void ResetSlot(int index) 
+    {
+        slots[index].sprite = placements[index];
     }
 }

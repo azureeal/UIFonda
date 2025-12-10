@@ -117,9 +117,6 @@ public class Inventory : MonoBehaviour
         {
             slots[slotIndex].Clear();
         }
-
-        // Mettre � jour l'UI ici si n�cessaire
-        UpdateUI();
     }
 
     public bool AddItem(Item item, int amount = 1)
@@ -132,7 +129,6 @@ public class Inventory : MonoBehaviour
                 int spaceLeft = item.maxStack - slots[i].quantity;
                 int toAdd = Mathf.Min(amount, spaceLeft);
                 slots[i].quantity += toAdd;
-                UpdateUI();
                 return true;
             }
         }
@@ -143,22 +139,12 @@ public class Inventory : MonoBehaviour
             if (slots[i].IsEmpty)
             {
                 slots[i].SetItem(item, amount);
-                UpdateUI();
                 return true;
             }
         }
 
         Debug.Log("Inventory full!");
         return false;
-    }
-    private void UpdateUI()
-    {
-        // Ici vous pouvez mettre � jour votre UI d'inventaire
-        // Par exemple : 
-        // for (int i = 0; i < slots.Length; i++)
-        // {
-        //     inventoryUI.UpdateSlot(i, slots[i].item, slots[i].quantity);
-        // }
     }
 
 }

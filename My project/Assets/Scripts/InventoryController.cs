@@ -2,13 +2,14 @@ using UnityEngine;
 
 public class InventoryController : MonoBehaviour
 {
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
+    [SerializeField] InventoryView view;
+    Inventory inventory;
     void Start()
     {
-        
+        inventory = new();
     }
 
-    // Update is called once per frame
+
     void Update()
     {
         

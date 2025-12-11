@@ -1,34 +1,64 @@
+using System.Collections.Generic;
 using UnityEngine;
 
 public class InventoryController : MonoBehaviour
 {
-    [SerializeField] InventoryView view;
+    [SerializeField] private InventoryView view;
+    [SerializeField] private GameObject slotPrefab;
+    [SerializeField] private Transform content;
+
+    private Inventory inventory;
+
     void Start()
     {
-
+        inventory = new Inventory(20);
+        BuildSlotViews(inventory.GetSlots().Count);
+        RefreshView();
     }
 
-    
-    void Update()
+    void BuildSlotViews(int slotCount)
     {
-       
+        for (int i = 0; i < slotCount; i++)
+        {
+            GameObject go = Instantiate(slotPrefab, content);
+            ItemSlotView slotView = go.GetComponent<ItemSlotView>();
+            view.slotViews.Add(slotView);
+        }
     }
+
     public void AddItem(Item item)
     {
-        if (Inventory.Instance.IsInInventory(item))
+        if (inventory.AddItem(item))
         {
-            return;
-        }
-        if (Inventory.Instance.AddItem(item, 1))
-        {
-            int i = Inventory.Instance.GetIndex(item);
-            view.slots[i].sprite = Inventory.Instance.GetSlots()[i].item.icon;
+            RefreshView();
         }
     }
 
-    public void RemoveItem(int slotIndex)
+    public void RemoveItem(int index)
     {
-        view.ResetSlot(slotIndex);
-        Inventory.Instance.RemoveOneFromSlot(slotIndex);
+        inventory.RemoveOneFromSlot(index);
+        RefreshView();
+    }
+
+    void RefreshView()
+    {
+        List<InventorySlot> slots = inventory.GetSlots();
+
+        for (int i = 0; i < view.slotViews.Count; i++)
+        {
+            if (i < slots.Count && !slots[i].IsEmpty)
+            {
+                var item = slots[i].item;
+                view.SetSlot(
+                    i,
+                    item.icon,
+                    () => RemoveItem(inventory.GetIndex(item))
+                );
+            }
+            else
+            {
+                view.ClearSlot(i);
+            }
+        }
     }
 }

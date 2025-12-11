@@ -1,70 +1,54 @@
-﻿// Inventory.cs
-using System.Collections;
-using UnityEngine;
-using static UnityEditor.Progress;
-
-public class Inventory : MonoBehaviour
+﻿using UnityEngine;
+using System.Collections.Generic;
+public class Inventory
 {
-    public static Inventory Instance;
 
-    [SerializeField] private InventorySlot[] slots = new InventorySlot[4];
+    [SerializeField] private List<InventorySlot> slots;
 
-    private void Awake()
+    public Inventory(int slotCount)
     {
-        if (Instance == null)
-        {
-            Instance = this;
-            DontDestroyOnLoad(gameObject);
-        }
-        else
-        {
-            Destroy(gameObject);
-            return;
-        }
+        slots = new List<InventorySlot>(slotCount);
         InitializeSlots();
     }
-    public InventorySlot[] GetSlots()
+    public new List<InventorySlot> GetSlots()
     {
         return slots;
     }
     private void InitializeSlots()
     {
-        for (int i = 0; i < slots.Length; i++)
+        for (int i = 0; i < slots.Capacity; i++)
         {
-            if (slots[i] == null)
-                slots[i] = new InventorySlot();
+            slots.Add(new InventorySlot());
         }
     }
     public int GetIndex(Item item)
     {
-        if (item == null) return -1;
-
-        for (int i = 0; i < slots.Length; i++)
+        foreach (InventorySlot slot in slots)
         {
-            if (!slots[i].IsEmpty && slots[i].item == item)
+            if (item == slot.item)
             {
-                return i;
+                return slots.IndexOf(slot);
             }
         }
-
         return -1;
     }
 
     public void RemoveOneFromSlot(int slotIndex)
     {
-        if (slotIndex < 0 || slotIndex >= slots.Length) return;
+        if (slotIndex < 0 || slotIndex >= slots.Count) return;
 
         slots[slotIndex].quantity--;
+
         if (slots[slotIndex].quantity <= 0)
         {
-            slots[slotIndex].Clear();
+            slots.RemoveAt(slotIndex);
         }
     }
 
+
     public bool AddItem(Item item, int amount = 1)
     {
-        // Essayer d'ajouter � un slot existant
-        for (int i = 0; i < slots.Length; i++)
+        for (int i = 0; i < slots.Count; i++)
         {
             if (slots[i].CanAddItem(item))
             {
@@ -75,8 +59,7 @@ public class Inventory : MonoBehaviour
             }
         }
 
-        // Chercher un slot vide
-        for (int i = 0; i < slots.Length; i++)
+        for (int i = 0; i < slots.Count; i++)
         {
             if (slots[i].IsEmpty)
             {
@@ -91,7 +74,7 @@ public class Inventory : MonoBehaviour
     public int GetOccupiedSlotCount()
     {
         int count = 0;
-        for (int i = 0; i < slots.Length; i++)
+        for (int i = 0; i < slots.Count; i++)
         {
             if (!slots[i].IsEmpty)
                 count++;

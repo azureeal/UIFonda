@@ -1,7 +1,6 @@
 // InventorySlot.cs
 using System;
 using UnityEngine;
-using static UnityEditor.Progress;
 
 [Serializable]
 public class InventorySlot

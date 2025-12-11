@@ -1,27 +1,18 @@
 using UnityEngine;
-using UnityEngine.UI;
+using System.Collections.Generic;
 
 public class InventoryView : MonoBehaviour
 {
-    public Image[] slots;
-    public Sprite[] placements;
+    public List<ItemSlotView> slotViews = new();
 
-    void Start()
+    public void SetSlot(int index, Sprite icon, System.Action onClick)
     {
-        
+        slotViews[index].SetIcon(icon);
+        slotViews[index].SetOnClick(onClick);
     }
 
-    void Update()
+    public void ClearSlot(int index)
     {
-        
-    }
-
-    public void SetItem(Sprite item, int index)
-    {
-        slots[index].sprite = item;
-    }
-    public void ResetSlot(int index) 
-    {
-        slots[index].sprite = placements[index];
+        slotViews[index].Clear();
     }
 }

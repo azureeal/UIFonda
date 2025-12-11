@@ -1,63 +1,62 @@
-using System.Collections.Generic;
 using UnityEngine;
+using System.Collections.Generic;
 
 public class InventoryController : MonoBehaviour
 {
-    [SerializeField] private InventoryView view;
     [SerializeField] private GameObject slotPrefab;
     [SerializeField] private Transform content;
 
     private Inventory inventory;
+    private List<ItemSlotController> slotControllers = new();
 
     void Start()
     {
         inventory = new Inventory(20);
-        BuildSlotViews(inventory.GetSlots().Count);
-        RefreshView();
+        BuildSlotControllers(inventory.GetSlots().Count);
+        RefreshUI();
     }
 
-    void BuildSlotViews(int slotCount)
+    void BuildSlotControllers(int count)
     {
-        for (int i = 0; i < slotCount; i++)
+        for (int i = 0; i < count; i++)
         {
             GameObject go = Instantiate(slotPrefab, content);
-            ItemSlotView slotView = go.GetComponent<ItemSlotView>();
-            view.slotViews.Add(slotView);
+            var controller = go.GetComponent<ItemSlotController>();
+            slotControllers.Add(controller);
         }
     }
 
     public void AddItem(Item item)
     {
         if (inventory.AddItem(item))
-        {
-            RefreshView();
-        }
+            RefreshUI();
     }
 
     public void RemoveItem(int index)
     {
         inventory.RemoveOneFromSlot(index);
-        RefreshView();
+        RefreshUI();
     }
 
-    void RefreshView()
+    private void RefreshUI()
     {
         List<InventorySlot> slots = inventory.GetSlots();
 
-        for (int i = 0; i < view.slotViews.Count; i++)
+        for (int i = 0; i < slotControllers.Count; i++)
         {
             if (i < slots.Count && !slots[i].IsEmpty)
             {
-                var item = slots[i].item;
-                view.SetSlot(
-                    i,
-                    item.icon,
-                    () => RemoveItem(inventory.GetIndex(item))
+                int capturedIndex = i;
+                var slot = slots[i];
+
+                slotControllers[i].SetSlot(
+                    slot.item.icon,
+                    () => RemoveItem(inventory.GetIndex(slot.item))
                 );
             }
             else
             {
-                view.ClearSlot(i);
+                slotControllers[i].ClearSlot();
             }
         }
     }

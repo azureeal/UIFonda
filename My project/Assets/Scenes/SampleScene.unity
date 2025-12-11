@@ -312,7 +312,6 @@ GameObject:
   - component: {fileID: 116582378}
   - component: {fileID: 116582377}
   - component: {fileID: 116582376}
-  - component: {fileID: 116582379}
   m_Layer: 5
   m_Name: InventoryPanel
   m_TagString: Untagged
@@ -410,20 +409,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 116582374}
   m_CullTransparentMesh: 1
---- !u!114 &116582379
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 116582374}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: eebe1541af77b5749ac7cab3a13fe1a1, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  content: {fileID: 2075917471}
-  itemSlotPrefab: {fileID: 2008615416392082876, guid: 7c70673a6f6b9c3479ce255ce0dab3a5, type: 3}
 --- !u!1 &211457554
 GameObject:
   m_ObjectHideFlags: 0
@@ -2313,8 +2298,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 15c3ba36369c9a8438a2e728a6a167d3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  view: {fileID: 116582379}
-  slots: []
+  slotPrefab: {fileID: 2008615416392082876, guid: 7c70673a6f6b9c3479ce255ce0dab3a5, type: 3}
+  content: {fileID: 2075917471}
 --- !u!4 &1869519725
 Transform:
   m_ObjectHideFlags: 0
